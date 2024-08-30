@@ -24,7 +24,7 @@ used = False
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--no-cache")
-service = Service('/path/to/chromedriver')
+service = Service('./chromedriver')
 driver = webdriver.Chrome(service=service, options=options)
 driver.implicitly_wait(7)
 
