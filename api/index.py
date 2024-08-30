@@ -2,7 +2,7 @@ from flask import Flask, abort, jsonify, request, url_for, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-import time, logging, os, random
+import time, os, random
 from functools import wraps
 
 app = Flask(__name__)
@@ -18,14 +18,6 @@ def rd():
 
 API_KEY = rd()
 used = False
-
-# Configure logging
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("app.log"), logging.StreamHandler()],
-)
-
 
 # Initialize WebDriver
 options = Options()
@@ -92,8 +84,7 @@ def dvlaapi(plate):
         elapsed_time = time.time() - start_time
         result["timetaken"] = f"{elapsed_time:.2f} seconds"
         return jsonify(result), 200
-    except Exception as e:
-        logging.error(f"Error in dvlaapi: {e}")
+    except Exception:
         return jsonify({"Error": "Internal Server Error"}), 500
 
 
@@ -162,8 +153,7 @@ def driverprocess(carplate: str = None):
         resultdetails["TaxAndMot"] = ExtractTaxMot(panels)
         resultdetails["OtherDetails"] = ExtractDetails(detailsclass)
         success = True
-    except Exception as e:
-        logging.error(f"Error in driverprocess: {e}")
+    except Exception:
         return None
     finally:
         # Do not quit the driver here if it's reused
