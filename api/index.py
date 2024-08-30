@@ -22,6 +22,7 @@ used = False
 # Initialize WebDriver
 options = Options()
 options.add_argument("--headless")
+options.add_argument("--no-cache")
 driver = webdriver.Chrome(options=options)
 driver.implicitly_wait(7)
 
