@@ -1,6 +1,7 @@
 from flask import Flask, abort, jsonify, request, url_for, redirect
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 import time, os, random
 from functools import wraps
@@ -23,7 +24,8 @@ used = False
 options = Options()
 options.add_argument("--headless")
 options.add_argument("--no-cache")
-driver = webdriver.Chrome(options=options)
+service = Service('/path/to/chromedriver')
+driver = webdriver.Chrome(service=service, options=options)
 driver.implicitly_wait(7)
 
 
