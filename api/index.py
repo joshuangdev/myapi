@@ -1,5 +1,5 @@
-from flask import Flask, jsonify, request
-import requests
+from flask import Flask, jsonify, request, send_from_directory, url_for
+import requests, os
 
 
 app = Flask(__name__)
@@ -81,6 +81,19 @@ def currencyroutes():
             "ZAR": "South African Rand",
         }
     )
+
+
+@app.route("/flag")
+def serve_asset():
+    flag = request.args.get("flag", None)
+    apikey = request.args.get("apikey", None)
+    if not apikey:
+        return jsonify({"error": "apikey is required"})
+    if not apikey in apikeylist:
+        return
+    if not flag:
+        return jsonify({"error": "flag is required"})
+    return send_from_directory(os.path.join("../assets"), f"{flag}.png")
 
 
 if __name__ == "__main__":
