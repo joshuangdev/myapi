@@ -23,6 +23,59 @@ def health_check():
     return jsonify({"status": "healthy"})
 
 
+@app.route("/currency/convert")
+def currencynameconvert():
+    text = request.args.get("text", None)
+    apikey = request.args.get("apikey", None)
+    if not apikey:
+        return jsonify({"error": "apikey is required"})
+    if not apikey in apikeylist:
+        return jsonify({"error": "invalid apikey"})
+    if not text:
+        return jsonify({"error": "text is required"})
+
+    currency_codes = {
+        "Australian Dollar (AUD)": "AUD",
+        "Bulgarian Lev (BGN)": "BGN",
+        "Brazilian Real (BRL)": "BRL",
+        "Canadian Dollar (CAD)": "CAD",
+        "Swiss Franc (CHF)": "CHF",
+        "Chinese Yuan (CNY)": "CNY",
+        "Czech Koruna (CZK)": "CZK",
+        "Danish Krone (DKK)": "DKK",
+        "Euro (EUR)": "EUR",
+        "Great British Pound (GBP)": "GBP",
+        "Hong Kong Dollar (HKD)": "HKD",
+        "Hungarian Forint (HUF)": "HUF",
+        "Indonesian Rupiah (IDR)": "IDR",
+        "Israeli New Shekel (ILS)": "ILS",
+        "Indian Rupee (INR)": "INR",
+        "Icelandic Krona (ISK)": "ISK",
+        "Japanese Yen (JPY)": "JPY",
+        "South Korean Won (KRW)": "KRW",
+        "Mexican Peso (MXN)": "MXN",
+        "Malaysian Ringgit (MYR)": "MYR",
+        "Norwegian Krone (NOK)": "NOK",
+        "New Zealand Dollar (NZD)": "NZD",
+        "Philippine Peso (PHP)": "PHP",
+        "Polish Zloty (PLN)": "PLN",
+        "Romanian Leu (RON)": "RON",
+        "Swedish Krona (SEK)": "SEK",
+        "Singapore Dollar (SGD)": "SGD",
+        "Thai Baht (THB)": "THB",
+        "Turkish Lira (TRY)": "TRY",
+        "United States Dollar (USD)": "USD",
+        "South African Rand (ZAR)": "ZAR",
+    }
+
+    currency_code = currency_codes.get(text)
+
+    if currency_code:
+        return jsonify({"currency": text, "code": currency_code})
+    else:
+        return jsonify({"error": f"Currency code for '{text}' not found"}), 404
+
+
 @app.route("/currency")
 def currency():
     fromc = request.args.get("fromc", "GBP")
@@ -96,7 +149,7 @@ def serve_asset():
     return send_from_directory(os.path.join("../assets"), f"{flag}.png")
 
 
-@app.route("/convertcountryname/")
+@app.route("/convertcountryname")
 def convert_country_name():
     name = request.args.get("name", None)
     apikey = request.args.get("apikey", None)
