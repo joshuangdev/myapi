@@ -96,5 +96,7 @@ def serve_asset():
     return send_from_directory(os.path.join("../assets"), f"{flag}.png")
 
 
+# Hi
+
 if __name__ == "__main__":
     app.run(debug=True)
